@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale = 1.0">
+	<meta http-equiv="X-UA-Compatible"content="ie=edge">
+	<title>Agregar Usuario</title>
+	{% load static %}
+	<link rel="shortcut icon" href="{% static 'img/poli.jpg' %}" type="image/x-icon">
+	<link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+</head>
+<body>
+	<header>
+		<nav>
+			<a href="#">Inicio</a>
+		</nav>
+		<section>
+			<h1 align="center"  height="430px" width="100%" style="color:#fff">Agregar Usuario</h1>
+		</section>
+		<div>
+			{% if action == 'create' %}
+				<form action="/altadeusuario/add/" method="post">
+			{% else %}
+				<form action="/altadeusuario/edit/{{ altausuario11.id }}" method="post">
+			{% endif %}
+				{% csrf_token %}
+					<input type="text" name="identificacion" placeholder="identificacion" value="{% if action == 'edit' %} {{ altausuario11.identificacion }} {% endif %}"><br><br>
+					<input type="text" name="Nombre" placeholder="Nombre" value="{% if action == 'edit' %} {{ altausuario11.Nombre }} {% endif %}"><br><br>
+					<input type="text" name="Apellidos" placeholder="Apellidos" value="{% if action == 'edit' %} {{ altausuario11.Apellidos }} {% endif %}"><br><br>
+					<input type="text" name="Puesto" placeholder="Puesto" value="{% if action == 'edit' %} {{ altausuario11.Puesto }} {% endif %}"><br><br>
+					<input type="text" name="Horario" placeholder="Horario" value="{% if action == 'edit' %} {{ altausuario11.Horario }} {% endif %}"><br><br>
+					<input type="text" name="Descanso" placeholder="Descanso" value="{% if action == 'edit' %} {{ altausuario11.Descanso }} {% endif %}"><br><br>
+					<select name="Perfiles" placeholder="Perfiles" id="Perfiles" value="{% if action == 'edit' %} {{ altausuario11.Perfiles }} {% endif %}"><br><br>
+						<option value="usuariotecnico">Usuario Técnico</option>
+						<option value="usuarioadministrador">Usuario Supervisor</option>
+					</select><br><br>
+					<input type="submit" value=" {% if action == 'create' %} Agregar Usuario {% else %} Editar Usuario {% endif %}"><br><br>
+				</form>
+		</div>
+		<div class ="wave" style="height: 150px; overflow: hidden;" >
+			<svg viewBox="0 0 500 150" preserveAspectRatio="none" style="height: 100%; width: 100%;">
+			<path d="M0.00,49.98 C143.06,160.36 349.20,-49.98 500.00,49.98 L500.00,150.00 L0.00,150.00 Z" style="stroke: none; fill: #fff;"></path>
+			</svg>
+		</div>
+	</header>
+		<!--<section>
+				<div>
+					<img src="{% static 'img/herramientas.jpg' %}"  alt="">
+				</div>
+		</section>-->
+	<footer>
+		<div>
+			<div >
+				<h4 height="430px" width="100%" style="color:#fff">Trabajo Terminal II </h4>
+			</div>
+		</div>
+		<h2 height="430px" width="100%" style="color:#fff">&copy; Instituto Politécnico Nacional</h2>
+	</footer>
+</body>
+</html>
