@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Lista de usuarios</h1>
+    <hr>
+    <h3>Supervisores</h3>
+    {% if supervisors|length > 0 %}
+        <ul>
+        {% for supervisor in supervisors %}
+            <a href="{% url 'accounts:detail' supervisor.id %}">
+                <li>{{ supervisor.first_name }} {{ supervisor.last_name }}</li>
+            </a>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No hay usuarios supervisores registrados</p>
+    {% endif %}
+    <br>
+    <hr>
+    <br>
+    <h3>Técnicos</h3>
+    {% if technicians|length > 0 %}
+        <ul>
+        {% for technician in technicians %}
+            <a href="{% url 'accounts:detail' technician.id %}">
+                <li>{{ technician.first_name }} {{ technician.last_name }}</li>
+            </a>
+        {% endfor %}
+        <ul>
+    {% else %}
+        <p>No hay usuarios técnicos registrados</p>
+    {% endif %}
+
+{% endblock content %}
