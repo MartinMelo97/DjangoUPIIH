@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Lista de herramientas</h1>
+<br>
+<hr>
+{% if tools|length > 0 %}
+    <ul>
+        {% for tool in tools %}
+            <a href="{% url 'tools:detail' tool.id %}">
+                <li>{{ tool.name }} ({% if tool.is_in_maintain %}EN MANTENIMIENTO{% else %}DISPONIBLE{% endif %})</li>
+            </a>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No hay herramientas registradas</p>
+{% endif %}
+{% endblock content %}

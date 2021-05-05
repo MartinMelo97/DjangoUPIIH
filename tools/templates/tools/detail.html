@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{ tool.name }}</h1>
+<br>
+<hr>
+<br>
+<ul>
+    <li>Número de serie: <b>{{ tool.serial_number }}</b></li>
+    <li>Modelo: <b>{{ tool.model }}</b></li>
+    <li>Último mantenimiento: <b>{{ tool.mainteance_date|default_if_none:"Nunca se le ha dado mantenimiento" }}</b></li>
+    <li>¿Está en mantenimiento?; <b>{% if tool.is_in_maintain %}SI{% else %}NO{% endif %}</b></li>
+    <li>Especificaciones: <b>{{ tool.specifications|default_if_none:"N/A" }}</b></li>
+    <li>¿Tiene rastreador?: <b>{% if tool.has_tracker %}SI{% else %}NO{% endif %}</b></li>
+    {% if tool.has_tracker %}
+        <li>Indentificador del rastreador: <b>{{ tool.tracker_id|default_if_none:"No especificado aún" }}</b></li>
+    {% endif %}
+</ul>
+{% endblock content %}

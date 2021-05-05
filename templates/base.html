@@ -10,6 +10,8 @@
     <ul>
         <a href="{% url 'accounts:list' %}"><li>Lista de usuarios</li></a>
         <a href="{% url 'accounts:create' %}"><li>Crear un usuario</li></a>
+        <a href="{% url 'tools:list' %}"><li>Lista de herramientas</li></a>
+        <a href="{% url 'tools:create' %}"><li>Crear una herramienta</li></a>
     </ul>
     {% block content %}
     {% endblock content %}
