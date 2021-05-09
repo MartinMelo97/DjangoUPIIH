@@ -1,19 +1,44 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>{{ tool.name }}</h1>
-<br>
-<hr>
-<br>
-<ul>
-    <li>Número de serie: <b>{{ tool.serial_number }}</b></li>
-    <li>Modelo: <b>{{ tool.model }}</b></li>
-    <li>Último mantenimiento: <b>{{ tool.mainteance_date|default_if_none:"Nunca se le ha dado mantenimiento" }}</b></li>
-    <li>¿Está en mantenimiento?; <b>{% if tool.is_in_maintain %}SI{% else %}NO{% endif %}</b></li>
-    <li>Especificaciones: <b>{{ tool.specifications|default_if_none:"N/A" }}</b></li>
-    <li>¿Tiene rastreador?: <b>{% if tool.has_tracker %}SI{% else %}NO{% endif %}</b></li>
-    {% if tool.has_tracker %}
-        <li>Indentificador del rastreador: <b>{{ tool.tracker_id|default_if_none:"No especificado aún" }}</b></li>
-    {% endif %}
+    <h1>{{ tool.name }}</h1>
+    <a href="{% url 'tools:update' tool.id %}"><button>Editar</button></a>
+    <button id="delete-user">Eliminar Usuario</button>
+    <form action="{% url 'tools:delete'%}" method="POST" style="visibility: hidden">
+        {% csrf_token %}
+        <input type="hidden" name="id" value={{ tool.id }}>
+        <input type="submit" value="" id="send-form-delete">
+    </form>
+    <br>
+    <hr>
+    <br>
+    <ul>
+        <li>Número de serie: <b>{{ tool.serial_number }}</b></li>
+        <li>Modelo: <b>{{ tool.model }}</b></li>
+        <li>¿Ha tenido mantenimiento? <b>{% if tool.has_been_in_mainteance %}SI{% else %}NO{% endif %}</b></li>
+        {% if tool.has_been_in_mainteance %}
+            <li>Último mantenimiento: <b>{{ tool.mainteance_date|default_if_none:"Nunca se le ha dado mantenimiento" }}</b></li>
+        {% endif %}
+        <li>¿Está en mantenimiento? <b>{% if tool.is_in_maintain %}SI{% else %}NO{% endif %}</b></li>
+        <li>Especificaciones: <b>{{ tool.specifications|default_if_none:"N/A" }}</b></li>
+        <li>¿Tiene rastreador?: <b>{% if tool.has_tracker %}SI{% else %}NO{% endif %}</b></li>
+        {% if tool.has_tracker %}
+            <li>Indentificador del rastreador: <b>{{ tool.tracker_id|default_if_none:"No especificado aún" }}</b></li>
+        {% endif %}
 </ul>
 {% endblock content %}
+
+{% block scripts %}
+    <script>
+        const module = () => {
+            const $deleteButton = document.querySelector('#delete-user');
+            const $sendFormButton = document.querySelector('#send-form-delete');
+            $deleteButton.addEventListener('click', () => {
+                if (window.confirm('¿Estás seguro de querer eliminar esta herramienta?')) {
+                    $sendFormButton.click();
+                }
+            })
+        }
+        module();
+    </script>
+{% endblock scripts %}

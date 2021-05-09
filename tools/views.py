@@ -2,6 +2,7 @@ from django import views
 from django.shortcuts import render, redirect
 from .models import Tool
 from .forms import ToolForm
+from .utils import tools_form_validations
 
 def ListTools(request):
     tools = Tool.objects.all()
@@ -32,10 +33,9 @@ class CreateTool(views.View):
     def post(self, request):
         form = ToolForm(data=request.POST)
         if form.is_valid():
-            tool = form.save(commit=False)
-            if not form.cleaned_data['has_been_maintained']:
-                tool.mainteance_date = None
-            tool.save()
+            new_tool = form.save(commit=False)
+            new_tool = tools_form_validations(form, new_tool)
+            new_tool.save()
             return redirect('tools:list')
         else:
             context = {
@@ -55,3 +55,23 @@ class UpdateTool(views.View):
             'is_update': True
         }
         return render(request, self.template_name, context)
+
+    def post(self, request, id):
+        tool = Tool.objects.get(id=id)
+        tool_actual_is_in_maintain_value = tool.is_in_maintain
+        form = ToolForm(instance=tool, data=request.POST)
+        if form.is_valid():
+            tool_updated = form.save(commit=False)
+            tool_updated = tools_form_validations(form, tool_updated, tool_actual_is_in_maintain_value)
+            tool_updated.save()
+            return redirect('tools:detail', tool_updated.id)
+        else:
+            context = {
+                'form': form
+            }
+            return render(request, self.template_name, context)
+
+def DeleteTool(request):
+    tool = Tool.objects.get(id=request.POST['id'])
+    tool.delete()
+    return redirect('tools:list')
